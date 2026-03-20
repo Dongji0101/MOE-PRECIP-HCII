@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florida Weather Data Visualization</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="control-panel">
+            <h3>Data Controls</h3>
+            
+            <div class="control-group">
+                <label for="dataCategory">Category</label>
+                <select id="dataCategory">
+                    <option value="">Select category...</option>
+                    <option value="Temperature">Temperature</option>
+                    <option value="Hydrology">Hydrology</option>
+                    <option value="Radiation">Radiation</option>
+                    <option value="Moisture">Moisture</option>
+                    <option value="Cloud">Cloud</option>
+                    <option value="Mass">Mass</option>
+                    <option value="Momentum">Momentum</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="dataFile">Data Type</label>
+                <select id="dataFile" disabled>
+                    <option value="">Select data type...</option>
+                </select>
+            </div>
+
+            <div class="control-group prediction-toggle">
+                <label class="toggle-label">
+                    <input type="checkbox" id="predictionToggle">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Compare Predictions</span>
+                </label>
+                <span id="predictionStatus" class="prediction-status"></span>
+            </div>
+
+            <div class="control-group error-toggle" id="errorToggleGroup" style="display:none;">
+                <label class="toggle-label">
+                    <input type="checkbox" id="errorToggle">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Show Error Map</span>
+                </label>
+            </div>
+
+            <div id="playback-controls" class="playback-container">
+                <div class="playback-buttons">
+                    <button id="btnRewind" class="control-btn icon-btn" title="Rewind">
+                        &#9664;&#9664;
+                    </button>
+                    <button id="btnPlay" class="control-btn icon-btn" title="Play/Pause">
+                        &#9658;
+                    </button>
+                    <button id="btnFastForward" class="control-btn icon-btn" title="Fast Forward">
+                        &#9654;&#9654;
+                    </button>
+                </div>
+
+                <div class="speed-control">
+                    <label for="speedSelect">Speed</label>
+                    <select id="speedSelect">
+                        <option value="1000">1x</option>
+                        <option value="500" selected>2x</option>
+                        <option value="200">5x</option>
+                        <option value="50">10x</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="slider-header">
+                    <label for="timeSlider">Time</label>
+                    <span id="timeLabel" class="time-readout">--</span>
+                </div>
+                <input type="range" id="timeSlider" min="0" max="100" value="0" disabled>
+            </div>
+            
+            <div class="button-row">
+                <button id="loadData" class="primary-btn" disabled>Load</button>
+                <button id="clearData" class="secondary-btn">Clear</button>
+            </div>
+        </div>
+        
+        <div class="map-wrapper">
+            <div class="map-container" id="actual-map-container">
+                <div class="map-label" id="actualMapLabel" style="display:none;">Actual</div>
+                <div id="map"></div>
+                <div class="legend" id="legend" style="display: none;">
+                    <h4 id="legendTitle">Data Range</h4>
+                    <div class="color-bar"></div>
+                    <div class="legend-labels">
+                        <span id="minValue">Min</span>
+                        <span id="maxValue">Max</span>
+                    </div>
+                    <div id="unitLabel" style="text-align: center; margin-top: 5px; font-size: 11px; color: #2c3e50;"></div>
+                </div>
+            </div>
+            <div class="map-container" id="prediction-map-container" style="display:none;">
+                <div class="map-label">Predicted</div>
+                <div id="predictionMap"></div>
+            </div>
+            <div class="map-container" id="error-map-container" style="display:none;">
+                <div class="map-label">Error</div>
+                <div id="errorMap"></div>
+                <div class="legend error-legend" id="errorLegend" style="display: none;">
+                    <h4 id="errorLegendTitle">Error</h4>
+                    <div class="color-bar" id="errorColorBar"></div>
+                    <div class="legend-labels">
+                        <span id="errorMinValue">Min</span>
+                        <span id="errorMaxValue">Max</span>
+                    </div>
+                    <div id="errorUnitLabel" style="text-align: center; margin-top: 5px; font-size: 11px; color: #2c3e50;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div>Loading weather data...</div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
